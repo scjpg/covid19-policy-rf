@@ -78,30 +78,37 @@ train_data_AB <- index_cases_AB[index_split, ]
 test_data_AB <- index_cases_AB[-index_split, ]
 
 # run random forest for all predictors 
-rf_model_AB <- randomForest(new_cases ~ stringency_index + govresp_index + contamhealth_index + econ_index, data = train_data_AB, ntree = 100, importanc=TRUE)
+rf_model_AB <- randomForest(new_cases ~ stringency_index + govresp_index + contamhealth_index + econ_index, data = train_data_AB, 
+                            ntree = 100, 
+                            importanc=TRUE,
+                            nodesize = 7,
+                            mtry = 4)
 print(rf_model_AB)
 
+plot(rf_model_AB)
+
+# rank predictor importance
+importance(rf_model_AB)
+
+varImpPlot(rf_model_AB)
+
+# predictions for test data 
 predicted_values_AB <- predict(rf_model_AB, newdata = test_data_AB)
-print(predicted_values_AB)
 
 # evaluate model with rmse
 rmse(test_data_AB$new_cases, predicted_values_AB)
 
-# rank predictor importance
-varImpPlot(rf_model_AB)
-
 
 # cross validation 
-actual_values_AB <- test_data_AB$new_cases
-print(actual_values_AB)
+actual_values_AB <- test_data_AB$new_cases)
 
 residuals <- actual_values_AB - predicted_values_AB
 
-plot(predicted_values_AB, residuals, main = "Residuals vs Predicted Values", xlab = "Predicted Values", ylab = "Residuals")
+plot(predicted_values_AB, residuals, main = "Residuals vs Predicted Values for AB", xlab = "Predicted Values", ylab = "Residuals")
 abline(h = 0, col = "red", lty = 2)
 
-# FORECASTING
 
+# FORECASTING
 
 # plot time series 
 ggplot(data = index_cases_AB, mapping = aes(x = index_date, y = new_cases))  +
