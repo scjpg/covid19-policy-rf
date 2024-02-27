@@ -107,15 +107,13 @@ actual_values_ON <- test_data_ON$new_cases
 
 residuals <- actual_values_ON - predicted_values_ON
 
-plot(predicted_values_ON, residuals, main = "Residuals vs Predicted Values for ON", xlab = "Predicted Values", ylab = "Residuals")
-abline(h = 0, col = "red", lty = 2)
+plot(predicted_values_ON, residuals, main = "Residuals vs Predicted Values for ON", xlab = "Predicted Values", ylab = "Residuals") +
+  abline(h = 0, col = "red", lty = 2)
 
-
-# FORECASTING
-
-# plot time series 
+# plot test data predictions
 ggplot(data = index_cases_ON, mapping = aes(x = index_date, y = new_cases))  +
   geom_line(aes(x = index_date, y = new_cases, color = "Original")) +
   geom_line(data = test_data_ON, aes(x = index_date, y = predicted_values_ON, color = "Forecast")) +
   scale_color_manual(values = c("Original" = "blue", "Forecast" = "red")) +
-  labs(title = "Time Series Forecasting New COVID-19 Cases in Ontario with Random Forest", x = "Date", y = "New Cases")
+  labs(title = "Test Data Predictions for COVID-19 Cases in Ontario with Random Forest", x = "Date", y = "New Cases")
+

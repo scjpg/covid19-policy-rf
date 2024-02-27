@@ -50,8 +50,8 @@ tail(cases_AB)
 
 # INDEX AND CASES DATAFRAME MERGING 
 
-nrow(index_AB) # 1032 rows
-nrow(cases_AB) # 1032 rows
+nrow(index_AB) # 1032
+nrow(cases_AB) # 1032 
 
 index_cases_raw_AB <- bind_cols(index_AB, cases_AB)
 
@@ -77,6 +77,9 @@ index_split <- createDataPartition(y = index_cases_AB$new_cases, p = 0.7, list =
 train_data_AB <- index_cases_AB[index_split, ]
 test_data_AB <- index_cases_AB[-index_split, ]
 
+nrow(train_data_AB) # 724
+nrow(test_data_AB) # 308
+
 # run random forest for all predictors 
 rf_model_AB <- randomForest(new_cases ~ stringency_index + govresp_index + contamhealth_index + econ_index, data = train_data_AB, 
                             ntree = 100, 
@@ -100,12 +103,12 @@ rmse(test_data_AB$new_cases, predicted_values_AB)
 
 
 # cross validation 
-actual_values_AB <- test_data_AB$new_cases)
+actual_values_AB <- test_data_AB$new_cases
 
 residuals <- actual_values_AB - predicted_values_AB
 
-plot(predicted_values_AB, residuals, main = "Residuals vs Predicted Values for AB", xlab = "Predicted Values", ylab = "Residuals")
-abline(h = 0, col = "red", lty = 2)
+plot(predicted_values_AB, residuals, main = "Residuals vs Predicted Values for AB", xlab = "Predicted Values", ylab = "Residuals") +
+  abline(h = 0, col = "red", lty = 2)
 
 
 # FORECASTING
